@@ -1,0 +1,27 @@
+name: backup-tool
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: backup-tool
+    runs-on: buildjet-4vcpu-ubuntu-2204-arm
+    strategy:
+      matrix:
+        collection: [PlayerLinks, ClanStores]
+
+    steps:
+      - name: Init Backup Tool
+        run: docker compose up
+        env:
+          MONGO_COLLECTION_NAME: ${{ matrix.collection }}
+          S3_BUCKET: ${{ secrets.S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+          MONGO_HOST: ${{ secrets.MONGO_HOST }}
+          MONGO_PORT: ${{ secrets.MONGO_PORT }}
+          MONGO_USERNAME: ${{ secrets.MONGO_USERNAME }}
+          MONGO_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          MONGO_DB_NAME: ${{ secrets.MONGO_DB_NAME }}
