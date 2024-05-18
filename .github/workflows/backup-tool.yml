@@ -12,6 +12,9 @@ jobs:
         collection: [PlayerLinks, ClanStores]
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
       - name: Init Backup Tool
         run: docker compose up
         env:
